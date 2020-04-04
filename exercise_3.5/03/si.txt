@@ -1,0 +1,6 @@
+xiaownag,21,100
+xiaozhang,22,97
+xiaoli,24,93
+xiaowu,26,95
+xiaohua,28,89
+wuhua,21,100
