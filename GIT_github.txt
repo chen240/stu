@@ -1,0 +1,178 @@
+git 代码协同管理工具
+
+1.什么时git
+  git是一个开源的分布式版本控制系统，可用于高效地管理大小项目。
+  诞生于05年，是linux内核创始人写的。
+
+  分布式和集中式
+  分布式：每个节点都保存完整地代码，没有一个统一的中央服务器，节点之间项         目推送下载代码完成代码共享。
+  集中式：代码集中管理，每次完成的代码上传到中央管理器。然后再统一从中央         管理器下载代码使用。
+2.git的特点
+  1.git可以管理各种文件，特别是代码项目，多在*nix系统中使用
+  2.是分布式管理，不同于集中式，这是git和svn的核心区别
+  3.git可以更好的支持分支，方便多人协同工作
+  4.git分布式代码更安全，有全球唯一的commit版本号
+  5.git是开源的系统
+  6.使用git可以脱网工作，且数据传输较快
+
+3.git安装
+  Linux:
+  sudo apt-get install git
+
+  windows:msysgit.github.io
+4.git 配置命令
+
+  git config
+
+  配置级别
+    1.系统中所有的用户都使用该配置
+      命令：git config --system 
+      配置文件:/etc/gitconfig
+
+    2.当前用户可使用该配置
+      命令：git config --global
+      配置文件：~/.gitconfig
+
+    3.当前项目可使用该配置
+      命令：git config
+      配置文件:project/.git/config
+  配置内容：
+    1.配置用户名
+      e.g.配置用户名为Tedu
+      sudo git config --global user.name Tedu
+   
+    2.配置用户邮箱
+      e.g.配置邮箱
+      git config --global user.email 1852283984@qq.com
+      cat ~/.gitconfig
+    3.配置编译器
+      e.g. 配置编译器
+      git config core.editor sublime
+    4.查看配置信息
+      git config --list
+5.git基本命令
+  <图片讲解>
+  工作区--add--》暂存区  本地仓库   远程仓库
+  ------------------------ --->   ---------
+       自己主机上                 别人主机上
+  工作区-->project
+  暂存区-->暂时保存工作区的一个工作状态
+  本地仓库--->存放各个工作节点的版本
+
+  1.初始化仓库
+    git init--->会自动产生本机上的三个区域
+
+    *在某个目录下初始化仓库后会自动产生.git目录。该目录下
+     工作的所有文档即可以使用git进行管理
+  2.查看分支状态
+    git status
+
+    默认工作分支为master,可通过创建新的分支切换
+
+    工作区--->暂存区
+          add
+  3.文件的提交-->提交到
+     git add [file]
+
+     *将文件提交到暂存区
+     *提交内容可以是一个文件，多个文件用空格分开
+     *如果是*表示所有文件，也可以是目录
+     
+     删除暂存区某个文件提交记录
+     git rm --cached Readme.txt
+  4.文件同步到本地仓库
+    git commit -m "Add some files"
+
+    *同步时需要附加一些同步信息 在-m后添加
+    *所有对工作区的修改如果想同步到本地仓库，都需要
+      add-->commit
+  5.查看commit日志
+     git log
+     git log --pretty=oneline
+  6.一些工作区命令
+    查看本地文件和工作区差异
+     git diff file
+     e.g.
+     git diff Readme.txt
+
+     从本地仓库恢复文件
+     git checkout file
+
+     丢弃工作区修改
+     git checkout -- file
+  7.本地仓库文件的移动和删除
+    移动文件
+    git mv file dir
+
+    e.g.
+    git mv Readme.txt tcp_socket
+
+    删除文件
+    git rm file
+
+    *用法和mv rm命令相同。操作后直接commit即可工作区和
+     本地仓库同步
+6.版本控制命令
+  回到之前版本
+    git reset --hard HEAD^
+
+    *HEAD后数量决定了回到以上几个版本
+  回到指定的版本后
+    git reset --hard commit_id
+    git reset --hard 13a309d
+  
+  查看所有的版本好
+    1.查看所有的历史版本号
+     git reflog
+    2.使用git reset 去往指定版本
+     *git reflog 会有所有操作记录，最新的操作时钟在最上边
+7.标签管理
+  什么是标签：即在当前工作位置添加快照，保存工作状态，一般用于
+              版本的迭代。
+  1.创建新的标签
+    git tag v1.0
+
+    *默认是在最新的commit_id处打标签
+      添加标签信息
+      git tag v1.0 -m "message"
+
+      指定某个commit_id打标签
+      git tag v0.9 [commit_id]
+
+  2.查看标签
+     git tag  #列出当前标签
+     git show v1.0 #显示标签具体信息
+
+  3.删除标签
+     git tag -d v1.0
+  4.去往某个标签版本
+    git reset --hard v0.9
+
+8.临时工作区操作
+   1.创建保存临时工作区
+     git stash
+   2.查看保存的工作区
+     git stash list
+  
+   3.应用哪个工作区
+     git stash apply stash@{1}
+   4.应用上一个工作区并且删除
+     git stash pop
+   5.删除工作区
+     git stash drop stash@{0} #删除某一个
+     git stash clear  #删除所有
+-------------------------------------------------------
+cookie:
+  关于如何将项目上传到github远程仓库
+  1.github上创建新的仓库
+
+  2.进入要上传文件的目录下 
+   git init ---> git add <文件名或*> ----> git commit -m 'message' 
+   
+   ---> git remote add origin git@github.com:chen240/stu.git(库地址)
+   
+   --->git push -u origin master
+
+   *git status 查看状态
+   *git remote rm origin 删除远程同步仓库
+
